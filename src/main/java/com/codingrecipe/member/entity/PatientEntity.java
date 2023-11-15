@@ -15,8 +15,9 @@ import java.util.Date;
 public class PatientEntity {
 
     @Id //기본키
+    @Column(name = "patient_id")
     //@GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
-    private String patient_id;
+    private String patientId;
 
     @Column
     private String password;
@@ -24,19 +25,19 @@ public class PatientEntity {
     @Column
     private String name;
 
-    @Column
-    private LocalDate birth_date;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-    @Column(unique = true) //제약조건
-    private String phone_number;
+    @Column(unique = true, name = "phone_number") //제약조건
+    private String phoneNumber;
 
     public static PatientEntity toPatientEntity(PatientDTO patientDTO){
         PatientEntity patientEntity = new PatientEntity();
-        patientEntity.setPatient_id(patientDTO.getUserId()); //dto에 담긴걸 entity로 넘기기
+        patientEntity.setPatientId(patientDTO.getUserId()); //dto에 담긴걸 entity로 넘기기
         patientEntity.setName(patientDTO.getUserName());
         patientEntity.setPassword(patientDTO.getPassword());
-        patientEntity.setBirth_date(patientDTO.getBirthDate());
-        patientEntity.setPhone_number(patientDTO.getPhoneNumber());
+        patientEntity.setBirthDate(patientDTO.getBirthDate());
+        patientEntity.setPhoneNumber(patientDTO.getPhoneNumber());
         return patientEntity;
     }
 
