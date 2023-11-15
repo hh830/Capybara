@@ -9,6 +9,11 @@ import org.springframework.http.HttpStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(InvalidRegistrationException.class)
+    public ResponseEntity<String> handleInvalidRegistrationException(InvalidRegistrationException ex) {
+        // 예외 발생 시 처리할 로직
+        return new ResponseEntity<>("Invalid registration: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         return ResponseEntity
