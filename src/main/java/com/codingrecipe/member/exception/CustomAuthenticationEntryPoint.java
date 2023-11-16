@@ -19,7 +19,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        System.out.println("point request = " + request + ", response = " + response + ", authException = " + authException);
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("JSON 형식의 인증 오류 응답"); // 원하는 JSON 응답을 작성합니다.

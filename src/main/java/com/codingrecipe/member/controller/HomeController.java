@@ -21,4 +21,7 @@ public class HomeController {
         return "login";
     }
 
+    @GetMapping("/users/profile")
+    public String showProfileForm() { return "profile"; }
+
 }

@@ -55,9 +55,7 @@ public class LoginController {
             Map<String, Object> responseBody = new HashMap<>();
             //responseBody.put("message", "로그인 실패");
             throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "로그인 실패");
-            /*return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(responseBody);*/
+
         }
     }
 

@@ -1,25 +1,28 @@
 package com.codingrecipe.member.exception;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(InvalidRegistrationException.class)
-    public ResponseEntity<String> handleInvalidRegistrationException(InvalidRegistrationException ex) {
-        // 예외 발생 시 처리할 로직
-        return new ResponseEntity<>("Invalid registration: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("데이터 무결성 위반: 이미 사용 중인 데이터가 있습니다.");
+    @ExceptionHandler(CustomValidationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<?> handleCustomValidationException(CustomValidationException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", ex.getStatus());
+        body.put("error", ex.getMessage());
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.valueOf(ex.getStatus()));
     }
 
-    // 여기에 다른 예외 처리 메소드를 추가할 수 있습니다.
+    // Other exception handlers...
 }
