@@ -1,22 +1,24 @@
 package com.codingrecipe.member.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-import javax.persistence.EntityNotFoundException;
-
 
 
 public class CustomValidationException extends RuntimeException{
+    //private final HttpStatus httpStatus;
     private final int status;
 
     public CustomValidationException(int status, String message) {
         super(message);
-        this.status = status;
+        //this.httpStatus = httpStatus;
+        this.status=status;
     }
 
 
     public int getStatus() {
         return status;
     }
+/*
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }*/
 }

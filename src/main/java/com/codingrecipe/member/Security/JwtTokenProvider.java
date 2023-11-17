@@ -73,37 +73,25 @@ public class JwtTokenProvider {
         UserDetails userDetails = this.getUserDetails(token);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
-/*
-    public UserDetails validateTokenAndGetUserDetails(String token) {
-        // 사용자의 세부 정보 확인
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody();
 
-            String userId = claims.getSubject();
-            return new CustomUserDetails(userId);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-            // 토큰이 만료되거나, 잘못된 형식, 서명 오류 등으로 검증에 실패한 경우
-            throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 토큰");
-        }
-    }*/
     public boolean validateToken(String token) {
         // 토큰의 유효성만 확인
         try {
+            System.out.println("validate token = " + token);;
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 토큰");
-
         }
     }
 
-
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
+        System.out.println("request = " + request);
+        System.out.println("bearerToken = " + bearerToken);
+        //System.out.println(bearerToken.startsWith("Bearer "));
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            System.out.println("resolveToken = true");
             return bearerToken.substring(7); // "Bearer " 이후의 문자열을 반환
         }
         return null;

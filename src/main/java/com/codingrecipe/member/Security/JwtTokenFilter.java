@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
@@ -16,26 +17,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-/*
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
-            throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-        try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication auth = jwtTokenProvider.getAuthentication(token);
 
-                if (auth != null) {
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                }
-            }
-        } catch(Exception e){
-            logger.error("JWT Token validation error", e);
-
-            throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "Invalid token: " + e.getMessage());
-        }
-        filterChain.doFilter(req, res);
-    }*/
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
@@ -46,11 +28,24 @@ public class JwtTokenFilter extends GenericFilterBean {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
+            /*else {
+                // 토큰이 없거나 유효하지 않은 경우 401 상태 코드 설정
+                HttpServletResponse response = (HttpServletResponse) res;
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰입니다.\"}";
+                response.getWriter().write(jsonErrorResponse);
+                return;
+            }*/
         } catch (CustomValidationException e) {
-            // Instead of throwing the exception, you can log it and set an error attribute.
-            HttpServletRequest request = (HttpServletRequest) req;
-            request.setAttribute("jwtTokenValidationFailed", true);
-            // Log the exception with your logger here
+            HttpServletResponse response = (HttpServletResponse) res;
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰\"}";
+            response.getWriter().write(jsonErrorResponse);
+            return;
         }
         filterChain.doFilter(req, res);
     }
