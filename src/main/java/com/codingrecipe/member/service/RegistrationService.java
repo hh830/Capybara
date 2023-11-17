@@ -45,24 +45,24 @@ public class RegistrationService {
 
     private void validatePatientDTO(RegistrationDTO registrationDTO) {
         // 유효성 검사 로직
-        if (registrationDTO.getUserId().isEmpty()) {
+        if (registrationDTO.getUserId() == null || registrationDTO.getUserId().isEmpty()) {
             throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디가 비어있어요");
         }
-        else if(registrationDTO.getPassword().isEmpty())
+        else if(registrationDTO.getPassword() == null || registrationDTO.getPassword().isEmpty())
         {
             throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호가 비어있어요");
         }
-        else if(registrationDTO.getUserName().isEmpty())
+        else if(registrationDTO.getUserName() == null || registrationDTO.getUserName().isEmpty())
         {
             throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이름이 비어있어요");
 
         }
-        else if(registrationDTO.getBirthDate()== null)
+        else if(registrationDTO.getBirthDate()== null || registrationDTO.getBirthDate().isEmpty())
         {
             throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "생년월일이 비어있어요");
 
         }
-        else if(registrationDTO.getPhoneNumber().isEmpty())
+        else if(registrationDTO.getPhoneNumber() == null || registrationDTO.getPhoneNumber().isEmpty())
         {
             throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호가 비어있어요");
         }
@@ -71,31 +71,29 @@ public class RegistrationService {
             // 이미 아이디가 존재하는지 확인
             Optional<Patients> existingPatient = patientRepository.findByPatientId(registrationDTO.getUserId());
             if (existingPatient.isPresent()) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이미 존재하는 아이디입니다.");
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이미 존재하는 아이디");
             }
 
             // 비밀번호 길이가 8자 미만인 경우
             if (registrationDTO.getPassword().length() < 8) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호는 8자 이상이어야 합니다.");
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 8자 이상 필수 입력");
             }
 
-            // 이미 전화번호가 존재하는지 확인
-            Optional<Patients> existingPhoneNumber = patientRepository.findByPhoneNumber(registrationDTO.getPhoneNumber());
-            if (existingPhoneNumber.isPresent()) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이미 존재하는 전화번호입니다.");
-            }
 
+            if (!Pattern.matches("^[가-힣]+$", registrationDTO.getUserName())) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이름 형식 오류 (한글만 포함)");
+            }
 
             // 생년월일 형식 검사
             try {
                 LocalDate.parse(registrationDTO.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             } catch (DateTimeParseException e) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "생일 형식이 올바르지 않습니다. (올바른 형식: yyyy-MM-dd)");
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "생일 형식 오류 (yyyy-MM-dd)");
             }
 
             // 전화번호 형식 검사
             if (!Pattern.matches("\\d{3}-\\d{4}-\\d{4}", registrationDTO.getPhoneNumber())) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호 형식이 올바르지 않습니다. (올바른 형식: 000-0000-0000)");
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호 형식 오류 (000-0000-0000)");
             }
         }
     }

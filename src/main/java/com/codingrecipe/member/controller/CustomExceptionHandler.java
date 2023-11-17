@@ -13,6 +13,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CustomValidationException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateIdException(CustomValidationException ex) {
         ErrorResponse response = new ErrorResponse(ex.getStatus(), ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getStatus()));
+        return new ResponseEntity<>(response, HttpStatus.valueOf((ex.getStatus())));
     }
 }

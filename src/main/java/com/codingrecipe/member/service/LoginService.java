@@ -21,8 +21,8 @@ public class LoginService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public LoginDTO login(String username, String password) {
-        Patients patients = patientRepository.findByPatientId(username)
+    public LoginDTO login(String userId, String password) {
+        Patients patients = patientRepository.findByPatientId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
         if (bCryptPasswordEncoder.matches(password, patients.getPassword())) {
