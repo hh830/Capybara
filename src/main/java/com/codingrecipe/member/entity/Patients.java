@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @NoArgsConstructor // Lombok을 사용하여 기본 생성자를 추가
-@Table(name = "ex_patients")
+@Table(name = "patients")
 public class Patients {
 
     @Id //기본키

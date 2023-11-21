@@ -23,7 +23,7 @@ public class UserService {
             System.out.println("username = " + username);
             Patients patients = userOptional.get();
             // 필요한 정보를 가져와서 UserDTO에 설정
-            UserDTO userDTO = new UserDTO(username, patients.getPhoneNumber(), patients.getBirthDate());
+            UserDTO userDTO = new UserDTO(patients.getName(), patients.getPhoneNumber(), patients.getBirthDate());
             return userDTO;
         } else {
             System.out.println("11username = " + username);
