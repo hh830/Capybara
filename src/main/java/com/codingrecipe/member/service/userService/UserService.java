@@ -1,9 +1,9 @@
-package com.codingrecipe.member.service;
+package com.codingrecipe.member.service.userService;
 
-import com.codingrecipe.member.dto.UserDTO;
+import com.codingrecipe.member.dto.userDTO.UserDTO;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.PatientRepository;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

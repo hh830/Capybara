@@ -1,15 +1,12 @@
-package com.codingrecipe.member.service;
+package com.codingrecipe.member.service.userService;
 
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.exception.InvalidRegistrationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.codingrecipe.member.dto.RegistrationDTO;
-import com.codingrecipe.member.repository.PatientRepository;
+import com.codingrecipe.member.dto.userDTO.RegistrationDTO;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -73,12 +70,20 @@ public class RegistrationService {
             if (existingPatient.isPresent()) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이미 존재하는 아이디");
             }
+            //아이디 영문자, 숫자로만 구성
+            if (!Pattern.matches("^[a-zA-Z0-9]+$", registrationDTO.getUserId())) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디 형식 오류");
+            }
 
             // 비밀번호 길이가 8자 미만인 경우
             if (registrationDTO.getPassword().length() < 8) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 8자 이상 필수 입력");
             }
 
+            //비밀번호 영문자, 숫자, 특수문자만 포함
+            if (!Pattern.matches("^[a-zA-Z0-9\\p{Punct}]+$", registrationDTO.getPassword())) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 형식 오류");
+            }
 
             if (!Pattern.matches("^[가-힣]+$", registrationDTO.getUserName())) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이름 형식 오류 (한글만 포함)");
@@ -92,7 +97,7 @@ public class RegistrationService {
             }
 
             // 전화번호 형식 검사
-            if (!Pattern.matches("\\d{3}-\\d{4}-\\d{4}", registrationDTO.getPhoneNumber())) {
+            if (!Pattern.matches("\\d{3}-\\d{4}-\\d{4}", registrationDTO.getPhoneNumber()) || !Pattern.matches("^[0-9]+$", registrationDTO.getPhoneNumber())) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호 형식 오류 (000-0000-0000)");
             }
         }

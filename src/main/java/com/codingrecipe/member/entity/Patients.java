@@ -1,12 +1,11 @@
 package com.codingrecipe.member.entity;
 
-import com.codingrecipe.member.dto.RegistrationDTO;
+import com.codingrecipe.member.dto.userDTO.RegistrationDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Setter

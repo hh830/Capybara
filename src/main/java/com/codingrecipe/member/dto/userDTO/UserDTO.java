@@ -1,4 +1,4 @@
-package com.codingrecipe.member.dto;
+package com.codingrecipe.member.dto.userDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

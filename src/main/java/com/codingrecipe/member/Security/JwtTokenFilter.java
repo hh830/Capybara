@@ -28,27 +28,22 @@ public class JwtTokenFilter extends GenericFilterBean {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-            /*else {
-                // 토큰이 없거나 유효하지 않은 경우 401 상태 코드 설정
-                HttpServletResponse response = (HttpServletResponse) res;
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰입니다.\"}";
-                response.getWriter().write(jsonErrorResponse);
-                return;
-            }*/
-        } catch (CustomValidationException e) {
+        }catch (CustomValidationException e) {
+            // 클라이언트에게 오류 메시지 반환
             HttpServletResponse response = (HttpServletResponse) res;
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰\"}";
             response.getWriter().write(jsonErrorResponse);
+            filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
+
+            // 요청을 더 이상 진행시키지 않고 종료
             return;
         }
-        filterChain.doFilter(req, res);
+        filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
     }
+
 
 
 }
