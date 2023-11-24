@@ -1,18 +1,17 @@
 package com.codingrecipe.member.entity;
 
-import com.codingrecipe.member.dto.RegistrationDTO;
+import com.codingrecipe.member.dto.userDTO.RegistrationDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Setter
 @Getter
 @NoArgsConstructor // Lombok을 사용하여 기본 생성자를 추가
-@Table(name = "ex_patients")
+@Table(name = "patients")
 public class Patients {
 
     @Id //기본키

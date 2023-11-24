@@ -1,21 +1,14 @@
-package com.codingrecipe.member.service;
+package com.codingrecipe.member.service.userService;
 
-import com.codingrecipe.member.dto.LoginDTO;
-import com.codingrecipe.member.dto.ProfileDTO;
+import com.codingrecipe.member.dto.userDTO.ProfileDTO;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomServiceException;
 import com.codingrecipe.member.exception.CustomValidationException;
 import com.codingrecipe.member.exception.NotFoundException;
-import com.codingrecipe.member.repository.PatientRepository;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,15 +38,17 @@ public class ProfileService {
             Patients patients = patientRepository.findById(username)
                     .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
+
             // 비밀번호 변경 (null이 아닌 경우에만)
             if (profileDTO.getPassword() == null || profileDTO.getPassword().isEmpty()) {
             }
             else{
-                if(profileDTO.getPassword().length() >= 8){
+                if(profileDTO.getPassword().length() >= 8 && Pattern.matches("^[a-zA-Z0-9\\p{Punct}]+$", profileDTO.getPassword())){
                     patients.setPassword(passwordEncoder.encode(profileDTO.getPassword()));
                 }else{
-                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 8자 이상 필수 입력");
+                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 형식 오류");
                 }
+
             }
 
             // 이름 변경 (null이 아닌 경우에만)
@@ -66,12 +61,13 @@ public class ProfileService {
                     patients.setName(profileDTO.getUserName());
                 }
             }
+// 전화번호 형식 검사
 
             // 전화번호 변경 (null이 아닌 경우에만)
             if (profileDTO.getPhoneNumber()== null || profileDTO.getPhoneNumber().isEmpty()) {
 
             }else{
-                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()))
+                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()) && Pattern.matches("^[0-9]+$", profileDTO.getPhoneNumber()))
                 {
                     patients.setPhoneNumber(profileDTO.getPhoneNumber());
 

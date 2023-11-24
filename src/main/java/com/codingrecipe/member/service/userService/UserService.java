@@ -1,9 +1,9 @@
-package com.codingrecipe.member.service;
+package com.codingrecipe.member.service.userService;
 
-import com.codingrecipe.member.dto.UserDTO;
+import com.codingrecipe.member.dto.userDTO.UserDTO;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.PatientRepository;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class UserService {
             System.out.println("username = " + username);
             Patients patients = userOptional.get();
             // 필요한 정보를 가져와서 UserDTO에 설정
-            UserDTO userDTO = new UserDTO(username, patients.getPhoneNumber(), patients.getBirthDate());
+            UserDTO userDTO = new UserDTO(patients.getName(), patients.getPhoneNumber(), patients.getBirthDate());
             return userDTO;
         } else {
             System.out.println("11username = " + username);

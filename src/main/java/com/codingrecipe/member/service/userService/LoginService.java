@@ -1,10 +1,9 @@
-package com.codingrecipe.member.service;
+package com.codingrecipe.member.service.userService;
 
 
-import com.codingrecipe.member.dto.LoginDTO;
-import com.codingrecipe.member.dto.RegistrationDTO;
+import com.codingrecipe.member.dto.userDTO.LoginDTO;
 import com.codingrecipe.member.entity.Patients;
-import com.codingrecipe.member.repository.PatientRepository;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

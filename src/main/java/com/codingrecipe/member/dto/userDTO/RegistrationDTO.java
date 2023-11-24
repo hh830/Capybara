@@ -1,14 +1,12 @@
-package com.codingrecipe.member.dto;
+package com.codingrecipe.member.dto.userDTO;
 
 import com.codingrecipe.member.entity.Patients;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Getter
 @Setter

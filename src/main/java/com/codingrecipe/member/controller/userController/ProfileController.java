@@ -1,10 +1,10 @@
-package com.codingrecipe.member.controller;
+package com.codingrecipe.member.controller.userController;
 
 import com.codingrecipe.member.Security.JwtTokenProvider;
-import com.codingrecipe.member.dto.ProfileDTO;
+import com.codingrecipe.member.dto.userDTO.ProfileDTO;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.PatientRepository;
-import com.codingrecipe.member.service.ProfileService;
+import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.service.userService.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,6 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@ControllerAdvice
 public class ProfileController {
 
     @Autowired
@@ -40,24 +39,30 @@ public class ProfileController {
         Map<String, Object> errorDetails = new HashMap<>();
 
 
-            // 현재 인증된 사용자의 고유 식별자 가져오기
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // 현재 인증된 사용자의 고유 식별자 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 접근입니다.");
+        }
+        else {
             String userId = extractUserId(authentication);
             System.out.println("userId = " + userId);
             // 사용자 정보 수정 로직
-        try {
-            profileService.updateProfile(userId, profileDTO);
+            try {
+                profileService.updateProfile(userId, profileDTO);
 
-            return createResponse(HttpStatus.OK.value(), profileDTO.getUserName(), profileDTO.getPhoneNumber(), "사용자 정보 수정 완료");
-        } catch (CustomValidationException e) {
+                return createResponse(HttpStatus.OK.value(), profileDTO.getUserName(), profileDTO.getPhoneNumber(), "사용자 정보 수정 완료");
+            } catch (CustomValidationException e) {
 
-            log.error("Error during profile update", e);
+                log.error("Error during profile update", e);
 
-            errorDetails.put("status", e.getStatus());
-            errorDetails.put("message", e.getMessage());
-            return ResponseEntity
-                    .status(HttpStatus.valueOf(e.getStatus()))
-                    .body(errorDetails);
+                errorDetails.put("status", e.getStatus());
+                errorDetails.put("message", e.getMessage());
+                return ResponseEntity
+                        .status(HttpStatus.valueOf(e.getStatus()))
+                        .body(errorDetails);
+            }
         }
     }
 
