@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/save", "/users/login", "/hospitals/**").permitAll()
+                .antMatchers("/users/save", "/users/login", "/hospitals/**", "/reservations/available-times/**").permitAll()
                 //.antMatchers("/hospitals/**").permitAll() // '/hospitals' 경로에 대한 접근 허용
                 .antMatchers("/users/update", "/users/me").authenticated() // '/users/**' 경로는 인증 필요
                 .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요

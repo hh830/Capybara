@@ -24,14 +24,14 @@ public class Doctors {
     private String phoneNumber;
 
     @Column
-    private Text biography;
+    private String biography;
 
-    @Column(name = "business_id")
-    private String businessId;
-
-    @Column
-    private char genter;
+    @ManyToOne
+    @JoinColumn(name = "business_id", referencedColumnName = "business_id")
+    private Hospital hospital;
 
 
+    @Column(name = "gender", length = 1)
+    private String gender;
 
 }

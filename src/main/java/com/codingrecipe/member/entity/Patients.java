@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -28,9 +29,12 @@ public class Patients {
     @Column(name = "birth_date")
     private String birthDate;
 
-    @Column(unique = true, name = "phone_number") //제약조건
+    @Column(name = "phone_number")
     private String phoneNumber;
 
+
+    @OneToMany(mappedBy = "patients")
+    private Set<Appointments> appointments;
 
     public Patients(RegistrationDTO registrationDTO) {
         this.patientId = registrationDTO.getUserId();

@@ -48,7 +48,7 @@ public class HospitalController {
 
         try {
 
-            if ((query != null && !Pattern.matches("^[가-힣]+$", query)) || (department != null && !Pattern.matches("^[가-힣]+$", department))) {
+            if ((query != null && !Pattern.matches("^[가-힣\\s]+$", query)) || (department != null && !Pattern.matches("^[가-힣]+$", department))) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 입력(한글만 입력)");
             }
             else {

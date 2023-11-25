@@ -1,5 +1,6 @@
 package com.codingrecipe.member.service.userService;
 
+import com.codingrecipe.member.StringUtils;
 import com.codingrecipe.member.dto.userDTO.ProfileDTO;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomServiceException;
@@ -38,6 +39,7 @@ public class ProfileService {
             Patients patients = patientRepository.findById(username)
                     .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
+            StringUtils.removeSpacesFromDtoFields(profileDTO); //공백 제거
 
             // 비밀번호 변경 (null이 아닌 경우에만)
             if (profileDTO.getPassword() == null || profileDTO.getPassword().isEmpty()) {
@@ -67,7 +69,7 @@ public class ProfileService {
             if (profileDTO.getPhoneNumber()== null || profileDTO.getPhoneNumber().isEmpty()) {
 
             }else{
-                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()) && Pattern.matches("^[0-9]+$", profileDTO.getPhoneNumber()))
+                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()))
                 {
                     patients.setPhoneNumber(profileDTO.getPhoneNumber());
 

@@ -28,9 +28,13 @@ public class JwtTokenFilter extends GenericFilterBean {
                 Authentication auth = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
+            filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
+
         }catch (CustomValidationException e) {
             // 클라이언트에게 오류 메시지 반환
             HttpServletResponse response = (HttpServletResponse) res;
+            //filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
+
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -41,7 +45,6 @@ public class JwtTokenFilter extends GenericFilterBean {
             // 요청을 더 이상 진행시키지 않고 종료
             return;
         }
-        filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
     }
 
 

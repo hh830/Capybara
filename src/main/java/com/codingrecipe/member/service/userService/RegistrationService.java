@@ -1,5 +1,6 @@
 package com.codingrecipe.member.service.userService;
 
+import com.codingrecipe.member.StringUtils;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ public class RegistrationService {
 
     public RegistrationDTO save(RegistrationDTO registrationDTO) {
 
-        validatePatientDTO(registrationDTO);
+        StringUtils.removeSpacesFromDtoFields(registrationDTO); //공백 제거
+        validatePatientDTO(registrationDTO); //유효성 검사
 
         // 비밀번호를 BCryptPasswordEncoder로 암호화
         String encodedPassword = bCryptPasswordEncoder.encode(registrationDTO.getPassword());
@@ -97,7 +99,7 @@ public class RegistrationService {
             }
 
             // 전화번호 형식 검사
-            if (!Pattern.matches("\\d{3}-\\d{4}-\\d{4}", registrationDTO.getPhoneNumber()) || !Pattern.matches("^[0-9]+$", registrationDTO.getPhoneNumber())) {
+            if (!Pattern.matches("\\d{3}-\\d{4}-\\d{4}", registrationDTO.getPhoneNumber())) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호 형식 오류 (000-0000-0000)");
             }
         }
