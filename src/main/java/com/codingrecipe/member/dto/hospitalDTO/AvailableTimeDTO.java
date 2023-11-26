@@ -1,4 +1,4 @@
-package com.codingrecipe.member.dto.appointmentsDTO;
+package com.codingrecipe.member.dto.hospitalDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

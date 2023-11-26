@@ -32,6 +32,9 @@ public class JwtTokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
+    @Autowired
+    private TokenStore tokenStore;
+
     public String createToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
@@ -58,7 +61,7 @@ public class JwtTokenProvider {
         return userDetails;
     }
 
-    private String getUsername(String token) {
+    public String getUsername(String token) {
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
@@ -95,5 +98,10 @@ public class JwtTokenProvider {
             return bearerToken.substring(7); // "Bearer " 이후의 문자열을 반환
         }
         return null;
+    }
+
+    //이미 유효한 토큰이 있을 때 기존 토큰 삭제
+    public void invalidateToken(String userId) {
+        tokenStore.removeToken(userId);
     }
 }

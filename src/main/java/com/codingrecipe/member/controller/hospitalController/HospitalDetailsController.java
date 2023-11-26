@@ -28,12 +28,8 @@ public class HospitalDetailsController {
     public ResponseEntity<?> getHospitalDetails(@PathVariable String hospitalId) {
         try {
             HospitalDetailsDTO hospitalDetailsDTO;
-            System.out.println("오류오류1");
-
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println("Authentication: " + authentication);
 
-            System.out.println("오류오류2");
             if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
                 // 인증된 사용자의 정보를 활용
                 String userId = authentication.getName();

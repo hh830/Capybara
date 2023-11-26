@@ -36,6 +36,9 @@ public class Patients {
     @OneToMany(mappedBy = "patients")
     private Set<Appointments> appointments;
 
+    @Version
+    private Long version;
+
     public Patients(RegistrationDTO registrationDTO) {
         this.patientId = registrationDTO.getUserId();
         this.password = registrationDTO.getPassword();

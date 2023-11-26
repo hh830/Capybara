@@ -4,12 +4,14 @@ import com.codingrecipe.member.StringUtils;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.codingrecipe.member.dto.userDTO.RegistrationDTO;
 import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -27,19 +29,26 @@ public class RegistrationService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    @Transactional
     public RegistrationDTO save(RegistrationDTO registrationDTO) {
+        try {
+            StringUtils.removeSpacesFromDtoFields(registrationDTO); //공백 제거
+            validatePatientDTO(registrationDTO); //유효성 검사
 
-        StringUtils.removeSpacesFromDtoFields(registrationDTO); //공백 제거
-        validatePatientDTO(registrationDTO); //유효성 검사
+            // 비밀번호를 BCryptPasswordEncoder로 암호화
+            String encodedPassword = bCryptPasswordEncoder.encode(registrationDTO.getPassword());
+            registrationDTO.setPassword(encodedPassword);
 
-        // 비밀번호를 BCryptPasswordEncoder로 암호화
-        String encodedPassword = bCryptPasswordEncoder.encode(registrationDTO.getPassword());
-        registrationDTO.setPassword(encodedPassword);
+            // 데이터베이스에 저장하는 로직
+            Patients savedPatient = patientRepository.save(new Patients(registrationDTO));
 
-        // 데이터베이스에 저장하는 로직
-        Patients savedPatient = patientRepository.save(new Patients(registrationDTO));
+            return new RegistrationDTO(savedPatient);
 
-        return new RegistrationDTO(savedPatient);
+        } catch (ObjectOptimisticLockingFailureException e)
+        {
+            throw new CustomValidationException(HttpStatus.CONFLICT.value(), "동시 업데이트로 인한 예약 실패, 다시 실행해주세요.");
+        }
+
     }
 
     private void validatePatientDTO(RegistrationDTO registrationDTO) {
@@ -68,7 +77,7 @@ public class RegistrationService {
         else{
 
             // 이미 아이디가 존재하는지 확인
-            Optional<Patients> existingPatient = patientRepository.findByPatientId(registrationDTO.getUserId());
+            Optional<Patients> existingPatient = patientRepository.findOptionalByPatientId(registrationDTO.getUserId());
             if (existingPatient.isPresent()) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이미 존재하는 아이디");
             }

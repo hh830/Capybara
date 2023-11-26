@@ -10,11 +10,13 @@ import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import java.util.regex.Pattern;
 
@@ -79,9 +81,9 @@ public class ProfileService {
             }
 
             return patientRepository.save(patients);
-        } /*catch (DataIntegrityViolationException e) {
-            //throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "데이터베이스 무결성 오류");
-        }*/ catch (DataAccessException e) {
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new CustomValidationException(HttpStatus.CONFLICT.value(), "동시 업데이트로 인한 예약 실패, 다시 실행해주세요.");
+        } catch (DataAccessException e) {
             throw new CustomServiceException("서버 오류", e);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("사용자를 찾을 수 없습니다.", e);
