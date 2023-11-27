@@ -37,21 +37,19 @@ public class RegistrationController {
         // 여기서 patientId는 patientDTO에서 얻어야 합니다.
         // 예를 들어, patientService.save 메서드가 저장된 엔티티 또는 DTO를 반환하도록 수정할 수 있습니다.
 
-            System.out.println("registrationDTO = " + registrationDTO + ", result = " + result);
             Map<String, Object> errors = new HashMap<>();
             result.getFieldErrors().forEach(error ->
                     errors.put(error.getField(), error.getDefaultMessage())
             );
             return ResponseEntity.badRequest().body(errors);
         }
-        System.out.println("registrationDTO = " + registrationDTO + ", result = " + result);
 
         registrationService.save(registrationDTO);
-            Map<String, Object> responseBody = new HashMap<>();
+        Map<String, Object> responseBody = new HashMap<>();
 
-            responseBody.put("status", HttpStatus.OK.value());
-            responseBody.put("message", "회원가입 성공");
-            responseBody.put("userName", registrationDTO.getUserName());
+        responseBody.put("status", HttpStatus.OK.value());
+        responseBody.put("message", "회원가입 성공");
+        responseBody.put("userName", registrationDTO.getUserName());
 
 
         return ResponseEntity.ok(responseBody);

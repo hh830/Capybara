@@ -1,19 +1,21 @@
 package com.codingrecipe.member.repository.appointmentsRepository;
 
 import com.codingrecipe.member.entity.Appointments;
-import org.hibernate.mapping.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AppointmentsRepository extends JpaRepository<Appointments, Integer> {
-    //int countByAppointmentDateAndAppointmentTime(LocalDate appointmentDate, LocalTime appointmentTime, String businessId);
-    //boolean existsByHospital_BusinessIdAndAppointmentDateAndAppointmentTime(String businessId, LocalDate appointmentDate, LocalTime appointmentTime);
+
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    @QueryHints({ @QueryHint(name = "javax.persistence.lock.timeout", value = "5000") }) // 5초 타임아웃 설정
     int countByHospital_BusinessIdAndAppointmentDateAndAppointmentTime(String businessId, LocalDate appointmentDate, LocalTime startTime);
 
     int countByPatients_PatientIdAndHospital_BusinessIdAndStatus(String userId, String hospitalId, String 진료전);
@@ -29,4 +31,8 @@ public interface AppointmentsRepository extends JpaRepository<Appointments, Inte
     @Modifying
     @Query("UPDATE Appointments a SET a.status = '진료완료' WHERE a.appointmentDate < :currentDate AND a.status = '진료전'")
     int updateStatusForPastAppointments(LocalDate currentDate);
+
+    List<Appointments> findByPatients_PatientId(String patientId);
+
+
 }
