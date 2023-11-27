@@ -55,8 +55,6 @@ public class ProfileController {
                 return createResponse(HttpStatus.OK.value(), profileDTO.getUserName(), profileDTO.getPhoneNumber(), "사용자 정보 수정 완료");
             } catch (CustomValidationException e) {
 
-                log.error("Error during profile update", e);
-
                 errorDetails.put("status", e.getStatus());
                 errorDetails.put("message", e.getMessage());
                 return ResponseEntity

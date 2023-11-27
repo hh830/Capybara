@@ -1,5 +1,6 @@
 package com.codingrecipe.member.service.userService;
 
+import com.codingrecipe.member.StringUtils;
 import com.codingrecipe.member.dto.userDTO.ProfileDTO;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomServiceException;
@@ -9,11 +10,13 @@ import com.codingrecipe.member.repository.userRepository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import java.util.regex.Pattern;
 
@@ -38,6 +41,7 @@ public class ProfileService {
             Patients patients = patientRepository.findById(username)
                     .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
+            StringUtils.removeSpacesFromDtoFields(profileDTO); //공백 제거
 
             // 비밀번호 변경 (null이 아닌 경우에만)
             if (profileDTO.getPassword() == null || profileDTO.getPassword().isEmpty()) {
@@ -67,7 +71,7 @@ public class ProfileService {
             if (profileDTO.getPhoneNumber()== null || profileDTO.getPhoneNumber().isEmpty()) {
 
             }else{
-                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()) && Pattern.matches("^[0-9]+$", profileDTO.getPhoneNumber()))
+                if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()))
                 {
                     patients.setPhoneNumber(profileDTO.getPhoneNumber());
 
@@ -77,9 +81,9 @@ public class ProfileService {
             }
 
             return patientRepository.save(patients);
-        } /*catch (DataIntegrityViolationException e) {
-            //throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "데이터베이스 무결성 오류");
-        }*/ catch (DataAccessException e) {
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new CustomValidationException(HttpStatus.CONFLICT.value(), "동시 업데이트로 인한 예약 실패, 다시 실행해주세요.");
+        } catch (DataAccessException e) {
             throw new CustomServiceException("서버 오류", e);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("사용자를 찾을 수 없습니다.", e);

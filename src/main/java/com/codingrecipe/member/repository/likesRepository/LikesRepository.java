@@ -1,6 +1,5 @@
-package com.codingrecipe.member.repository.hospitalRepository;
+package com.codingrecipe.member.repository.likesRepository;
 
-import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.entity.Likes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,4 +13,7 @@ public interface LikesRepository extends JpaRepository<Likes, Long>, LikesReposi
 
     // 사용자별 좋아요 목록 조회
     List<Likes> findByPatientsPatientId(String patientId);
+
+    boolean existsByPatients_PatientIdAndHospital_BusinessId(String patientId, String businessId);
+
 }

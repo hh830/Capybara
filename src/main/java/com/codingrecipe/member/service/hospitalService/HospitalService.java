@@ -3,12 +3,10 @@ package com.codingrecipe.member.service.hospitalService;
 import com.codingrecipe.member.dto.hospitalDTO.HospitalDTO;
 import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
-import com.codingrecipe.member.repository.hospitalRepository.HospitalRepositoryCustom;
-import com.codingrecipe.member.repository.hospitalRepository.LikesRepository;
-import com.codingrecipe.member.repository.hospitalRepository.OperationTimeRepository;
+import com.codingrecipe.member.repository.likesRepository.LikesRepository;
+import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -50,6 +48,7 @@ public class HospitalService {
 
                 // HospitalDTO 객체 생성
                 return new HospitalDTO(
+                        hospital.getBusinessId(),
                         hospital.getName(),
                         hospital.getAddress(),
                         hospital.getDepartment(),
@@ -75,6 +74,7 @@ public class HospitalService {
 
             // HospitalDTO 객체 생성
             return new HospitalDTO(
+                    hospital.getBusinessId(),
                     hospital.getName(),
                     hospital.getAddress(),
                     hospital.getDepartment(),

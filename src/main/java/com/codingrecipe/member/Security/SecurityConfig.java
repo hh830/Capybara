@@ -24,6 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    private TokenStore tokenStore;
+
+    @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/save", "/users/login", "/hospitals/**").permitAll()
+                .antMatchers("/users/save", "/users/login", "/hospitals/**", "/reservations/available-times/**").permitAll()
                 //.antMatchers("/hospitals/**").permitAll() // '/hospitals' 경로에 대한 접근 허용
-                .antMatchers("/users/update", "/users/me").authenticated() // '/users/**' 경로는 인증 필요
+                .antMatchers("/users/update", "/users/me", "/reservations").authenticated() // '/users/**' 경로는 인증 필요
                 .anyRequest().authenticated() // 그 외 모든 요청은 인증 필요
                 .and()
                 .formLogin()
@@ -54,8 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 //.logoutSuccessUrl("/")
                 .permitAll()
-        .       and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
+                .and()
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider, tokenStore),
                 UsernamePasswordAuthenticationFilter.class);
     }
 

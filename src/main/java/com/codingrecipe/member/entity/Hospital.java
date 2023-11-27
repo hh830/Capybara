@@ -16,7 +16,6 @@ import java.util.Date;
 @NoArgsConstructor // Lombok을 사용하여 기본 생성자를 추가
 @Table(name = "hospital")
 public class Hospital {
-
         @Id
         @Column(name = "business_id")
         private String businessId;
@@ -33,7 +32,7 @@ public class Hospital {
         private String phoneNumber;
 
         @Column(name = "open_date")
-        private Date openDate;
+        private String openDate;
 
         // Likes와의 관계 (예: OneToMany, ManyToOne 등)
         @OneToMany(mappedBy = "hospital")
@@ -43,4 +42,9 @@ public class Hospital {
         @OneToMany(mappedBy = "hospital")
         private Set<OperatingHours> operatingHours;
 
+        @OneToMany(mappedBy = "hospital")
+        private Set<Doctors> doctors;
+
+        @OneToMany(mappedBy = "hospital")
+        private Set<Appointments> appointments;
 }

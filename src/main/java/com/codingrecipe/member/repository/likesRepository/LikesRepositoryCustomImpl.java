@@ -1,4 +1,4 @@
-package com.codingrecipe.member.repository.hospitalRepository;
+package com.codingrecipe.member.repository.likesRepository;
 
 import org.springframework.stereotype.Repository;
 
