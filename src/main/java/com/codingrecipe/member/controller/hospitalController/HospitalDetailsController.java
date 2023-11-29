@@ -50,6 +50,7 @@ public class HospitalDetailsController {
             // 예외 처리 로직 (에러 메시지 반환 등)
             Map<String,Object> errorbody = new HashMap<>();
             errorbody.put("hospitalId", hospitalId);
+            errorbody.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
             errorbody.put("message", "찾을 수 없습니다");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorbody);
         }

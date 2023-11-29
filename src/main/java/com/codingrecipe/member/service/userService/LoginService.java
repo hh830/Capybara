@@ -65,6 +65,7 @@ public class LoginService {
         // 헤더에 토큰 추가
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token);
+        System.out.println("token = "+token);
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.OK.value());

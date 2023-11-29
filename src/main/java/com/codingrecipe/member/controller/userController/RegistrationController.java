@@ -32,20 +32,27 @@ public class RegistrationController {
 
     @PostMapping("/users/save")
     public ResponseEntity<?> savePatient(@RequestBody @Valid RegistrationDTO registrationDTO, BindingResult result) {
+        Map<String, Object> responseBody = new HashMap<>();
+/*
         if(result.hasErrors()) {
 
         // 여기서 patientId는 patientDTO에서 얻어야 합니다.
         // 예를 들어, patientService.save 메서드가 저장된 엔티티 또는 DTO를 반환하도록 수정할 수 있습니다.
 
-            Map<String, Object> errors = new HashMap<>();
+            responseBody.put("status", HttpStatus.BAD_REQUEST.value());
+
+            Map<String, String> errors = new HashMap<>();
             result.getFieldErrors().forEach(error ->
                     errors.put(error.getField(), error.getDefaultMessage())
             );
-            return ResponseEntity.badRequest().body(errors);
-        }
+            //responseBody.put("errors", errors);
+            responseBody.put("message", error.getDefaultMessage());
+
+            return ResponseEntity.badRequest().body(responseBody);
+
+        }*/
 
         registrationService.save(registrationDTO);
-        Map<String, Object> responseBody = new HashMap<>();
 
         responseBody.put("status", HttpStatus.OK.value());
         responseBody.put("message", "회원가입 성공");

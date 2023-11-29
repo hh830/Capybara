@@ -16,4 +16,5 @@ public interface LikesRepository extends JpaRepository<Likes, Long>, LikesReposi
 
     boolean existsByPatients_PatientIdAndHospital_BusinessId(String patientId, String businessId);
 
+    boolean existsByHospital_BusinessIdAndPatients_PatientId(String businessId, String patientId);
 }

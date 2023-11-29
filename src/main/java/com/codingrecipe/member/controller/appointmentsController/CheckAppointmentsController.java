@@ -17,12 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/reservations/check")
+@RequestMapping("/reservations")
 public class CheckAppointmentsController {
 
     @Autowired
     private CheckAppointmentsService checkAppointmentsService;
 
+    @GetMapping("/check")
     public ResponseEntity<?> getReservationsByUserId() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

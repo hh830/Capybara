@@ -16,23 +16,31 @@ public class CheckAppointmentsService {
     private AppointmentsRepository appointmentsRepository;
 
     public List<AppointmentsDTO> getReservationsByUserId(String userId) {
-        List<Appointments> appointments = appointmentsRepository.findByPatients_PatientId(userId);
-        List<AppointmentsDTO> appointmentDTOs = new ArrayList<>();
 
-        for (Appointments appointment : appointments) {
-            AppointmentsDTO dto = new AppointmentsDTO(
-                    appointment.getHospital().getBusinessId(),
-                    appointment.getHospital().getName(),
-                    appointment.getHospital().getAddress(),
-                    appointment.getAppointmentDate(),
-                    appointment.getAppointmentTime(),
-                    appointment.getStatus(),
-                    appointment.getPatients().getName()
+        try{
+            List<Appointments> appointments = appointmentsRepository.findByPatients_PatientId(userId);
+            List<AppointmentsDTO> appointmentDTOs = new ArrayList<>();
 
-            );
-            appointmentDTOs.add(dto);
+            for (Appointments appointment : appointments) {
+                AppointmentsDTO dto = new AppointmentsDTO(
+                        appointment.getHospital().getBusinessId(),
+                        appointment.getHospital().getName(),
+                        appointment.getHospital().getAddress(),
+                        (long) appointment.getAppointmentId(),
+                        appointment.getAppointmentDate(),
+                        appointment.getAppointmentTime(),
+                        appointment.getStatus(),
+                        appointment.getPatients().getName()
+
+                );
+                appointmentDTOs.add(dto);
+            }
+            return appointmentDTOs;
+
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
         }
 
-        return appointmentDTOs;
     }
 }

@@ -41,13 +41,6 @@ public class AppointmentsService {
     @Autowired
     private HospitalRepository hospitalRepository;
 
-    @Autowired
-    private AvailableTimeService availableTimeService;
-
-    @Autowired
-    private OperationTimeRepository operationTimeRepository;
-
-
     // 매일 자정에 실행되는 스케줄링된 작업
     @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 (0시 0분)에 실행
     public void updateStatusForPastAppointments() {
@@ -124,19 +117,6 @@ public class AppointmentsService {
         return appointments;
     }
 
-
-    private boolean isReservationLimitReached(String userId, String hospitalId, LocalDate date, LocalTime time) {
-        // 같은 병원, 같은 날짜, 같은 시간에 예약 가능한 인원 제한
-        int maxReservationPerSlot = 3;
-        int reservationCount = appointmentsRepository.countByHospital_BusinessIdAndAppointmentDateAndAppointmentTime(hospitalId, date, time);
-
-        // 한 회원이 같은 병원에서 "진료전" 상태의 예약을 최대 2번까지 허용
-        int maxReservationCount = 2;
-        int userReservationCount = appointmentsRepository.countByPatients_PatientIdAndHospital_BusinessIdAndStatus(userId, hospitalId, "진료전");
-
-        return reservationCount >= maxReservationPerSlot || userReservationCount >= maxReservationCount;
-    }
-
     private boolean isPenaltyApplied(String userId) {
         // 2달 이내에 "예약부도" 상태인 예약 확인
         LocalDate oneMonthAgo = LocalDate.now().minusMonths(2);
@@ -157,9 +137,9 @@ public class AppointmentsService {
     //예약 가능 시간대 확인 - 비관적 락
     @Transactional(readOnly = true)
     boolean isTimeSlotAvailable(String hospitalId, LocalDate date, LocalTime time) {
-        int seat = availableTimeService.calculateAvailableSlots(hospitalId, date, time);
-
-        if(seat > 0) //남은 자리가 0 이상이면 예약 가능
+        //int seat = availableTimeService.calculateAvailableSlots(hospitalId, date, time);
+        int seat = 3 - appointmentsRepository.countAppointmentsForTimeSlot(hospitalId, date, time);
+        if(seat > 0) // 남은자리가 0 이상이면 예약 가능
         {
             return true;
         }

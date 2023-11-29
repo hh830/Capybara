@@ -31,33 +31,42 @@ public class SearchAppointmentsController {
     private SearchAppointmentsService searchAppointmentsService;
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchReservation(@RequestParam String hospitalName,
-                                               @RequestParam String date,
-                                               @RequestParam(defaultValue = "0", required = false) int page,
-                                               @RequestParam(defaultValue = "50", required = false) int limit)
+    public ResponseEntity<?> searchReservation(@RequestParam(required = false) String hospitalName,
+                                               @RequestParam(required = false) String date)
     {
 
         List<AppointmentsDTO> appointmentsDTOS;
         Map<String, Object> errorBody = new HashMap<>();
         LocalDate localDate = null;
-        try {
-            if (hospitalName != null && !Pattern.matches("\"^[가-힣]+$\"", hospitalName)) {
-                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 입력(한글만 입력)");
-            }
-            if (date != null){
-                try {
-                    LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
 
-                } catch (DateTimeParseException e) {
-                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 형식 (yyyy-MM-dd)");
-                }
-            }
+        try {
+
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
                 // 인증된 사용자의 정보를 활용
                 String userId = authentication.getName();
+
+                if (hospitalName != null && !Pattern.matches("^[가-힣]+$", hospitalName)) {
+                    System.out.println("여기?" + !Pattern.matches("^[가-힣]+$", hospitalName));
+                    System.out.println(hospitalName);
+                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 입력(한글만 입력)");
+                }
+                if (date != null){
+                    try {
+                        localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                    } catch (DateTimeParseException e) {
+                        throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 형식 (yyyy-MM-dd)");
+                    }
+                }
+                if(hospitalName == null || hospitalName.isEmpty())
+                {
+                    hospitalName = null;
+                } else {
+                    //공백 없애기
+                    hospitalName = hospitalName.replaceAll("\\s+", "");
+                }
                 appointmentsDTOS = searchAppointmentsService.searchAppointments(userId, hospitalName, localDate);
 
                 return ResponseEntity.ok(appointmentsDTOS);

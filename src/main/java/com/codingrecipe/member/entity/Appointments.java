@@ -40,9 +40,6 @@ public class Appointments {
     @JoinColumn(name = "business_id", nullable = false)
     private Hospital hospital;
 
-    @Version
-    private Long version;
-
     // 이 메소드는 Patients 엔티티를 찾아서 설정합니다.
     public void setUserId(String userId, PatientRepository patientRepository) {
         Patients patient = patientRepository.findByPatientId(userId);

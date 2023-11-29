@@ -5,6 +5,7 @@ import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
 import com.codingrecipe.member.repository.likesRepository.LikesRepository;
 import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,18 +18,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class HospitalService {
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
-    private final HospitalRepository hospitalRepository;
-    private final OperationTimeRepository operationTimeRepository;
-    private final LikesRepository likesRepository;
+    @Autowired
+    private OperationTimeRepository operationTimeRepository;
 
-    public HospitalService(HospitalRepository hospitalRepository,
-                           OperationTimeRepository operationTimeRepository,
-                           LikesRepository likesRepository) {
-        this.hospitalRepository = hospitalRepository;
-        this.operationTimeRepository = operationTimeRepository;
-        this.likesRepository = likesRepository;
-    }
+    @Autowired
+    private LikesRepository likesRepository;
+
 
     public List<HospitalDTO> searchHospitalsWithDetails(String query, int page, int size) {
 
@@ -84,9 +82,28 @@ public class HospitalService {
         }).collect(Collectors.toList());
     }
 
-    public List<HospitalDTO> getAllHospitals(int limit) {
-        return null;
+    public List<HospitalDTO> getAllHospitals(int page, int size) {
+
+        String today = new SimpleDateFormat("EEEE", Locale.KOREAN).format(new Date());
+        PageRequest pageRequest = PageRequest.of(page,size);
+        Page<Hospital> hospitals = hospitalRepository.findAll(pageRequest);
+
+        // 병원 목록을 HospitalDTO 목록으로 변환
+        return hospitals.stream().map(hospital -> {
+            // 운영시간 및 좋아요 수 조회
+            String operatingHours = operationTimeRepository.findOperatingHoursByHospitalIdAndDay(hospital.getBusinessId(), today);
+            long likesCount = likesRepository.getLikesCountForHospital(hospital.getBusinessId());
+
+            // HospitalDTO 객체 생성
+            return new HospitalDTO(
+                    hospital.getBusinessId(),
+                    hospital.getName(),
+                    hospital.getAddress(),
+                    hospital.getDepartment(),
+                    operatingHours,
+                    likesCount
+            );
+        }).collect(Collectors.toList());
+
     }
-
-
 }
