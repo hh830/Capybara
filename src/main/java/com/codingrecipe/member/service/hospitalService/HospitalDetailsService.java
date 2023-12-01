@@ -30,11 +30,10 @@ public class HospitalDetailsService {
     @Autowired
     private OperationTimeRepository operationTimeRepository;
 
-    private final DoctorRepository doctorRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    public HospitalDetailsService(DoctorRepository doctorRepository) {
-        this.doctorRepository = doctorRepository;
-    }
+
 
     public HospitalDetailsDTO getHospitalDetails(String userId, String hospitalId) {
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());

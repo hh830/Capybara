@@ -1,9 +1,8 @@
 package com.codingrecipe.member.controller.hospitalController;
 
-
 import com.codingrecipe.member.dto.hospitalDTO.LikesDTO;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.service.hospitalService.LikesAddService;
+import com.codingrecipe.member.service.hospitalService.LikesCancelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +16,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/likes")
-public class LikesAddController {
+public class LikesCancelController {
 
     @Autowired
-    private LikesAddService likesAddService;
+    private LikesCancelService likesCancelService;
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addLikes(@RequestBody LikesDTO likesDTO){
+    @DeleteMapping("/cancel")
+    public ResponseEntity<?> cancelLikes(@RequestBody LikesDTO likesDTO){
         Map<String, Object> response = new HashMap<>();
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -31,16 +30,16 @@ public class LikesAddController {
             if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
                 // 인증된 사용자의 정보를 활용
                 String userId = authentication.getName();
-                return likesAddService.addLikeIfNotExists(likesDTO, userId);
+                return likesCancelService.deleteLike(likesDTO, userId);
 
             } else {
                 throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 토큰");
             }
 
-
         } catch (CustomValidationException e){
             response.put("status", HttpStatus.BAD_REQUEST.value());
             response.put("message", "잘못된 요청");
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         catch (Exception e){

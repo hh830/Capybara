@@ -113,4 +113,18 @@ public class RegistrationService {
             }
         }
     }
+
+    //중복 확인
+    public boolean isUsernameAvailable(String userId) {
+
+        if (userId == null || userId.isEmpty()) {
+            throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디가 비어있어요");
+        } else{
+            //아이디 영문자, 숫자로만 구성
+            if (!Pattern.matches("^[a-zA-Z0-9]+$", userId)) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디 형식 오류");
+            }
+        }
+        return !patientRepository.existsByPatientId(userId);
+    }
 }

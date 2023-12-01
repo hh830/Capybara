@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.attoparser.dom.Text;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -33,5 +34,8 @@ public class Doctors {
 
     @Column(name = "gender", length = 1)
     private String gender;
+
+    @OneToMany(mappedBy = "doctors")
+    private Set<MedicalRecords> medicalRecords;
 
 }

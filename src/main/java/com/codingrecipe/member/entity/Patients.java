@@ -36,6 +36,9 @@ public class Patients {
     @OneToMany(mappedBy = "patients")
     private Set<Appointments> appointments;
 
+    @OneToMany(mappedBy = "patients")
+    private Set<MedicalRecords> medicalRecords;
+
     @Version
     private Long version;
 

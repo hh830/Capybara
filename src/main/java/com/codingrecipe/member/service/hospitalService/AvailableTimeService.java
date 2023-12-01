@@ -62,18 +62,12 @@ public class AvailableTimeService {
                     //남는자리 있는지
                     while (!startTime.isAfter(range.getEndTime()) && startTime.plusHours(1).isBefore(range.getEndTime()) || startTime.plusHours(1).equals(range.getEndTime())) {
                         int availableSlots = calculateAvailableSlots(hospitalId, date, startTime);
-
                         Map<String, Object> timeWithSlots = new HashMap<>();
 
                         timeWithSlots.put("time", startTime.toString());
-
                         timeWithSlots.put("availableSlots", Math.max(availableSlots, 0));
-
-
                         availableTimesWithSlots.add(timeWithSlots);
-
                         startTime = startTime.plusHours(1);
-
                     }
                 }
             }
