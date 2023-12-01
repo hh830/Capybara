@@ -11,5 +11,6 @@ public interface PatientRepository extends JpaRepository<Patients, String> { //<
     //아이디로 회원정보 조회 (select * from member_table where member_email=?)
     Patients findByPatientId(String patientId);
     Optional<Patients> findOptionalByPatientId(String patientId);
-    Optional<Patients> findByPhoneNumber(String phoneNumber);
+
+    boolean existsByPatientId(String patientId);
 }

@@ -40,7 +40,7 @@ public class HospitalController {
             @RequestParam(required = false) String query,
             @RequestParam(required = false) String department,
             @RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue = "50", required = false) int limit)
+            @RequestParam(defaultValue = "200", required = false) int limit)
     {
 
         List<HospitalDTO> hospitalDTOs;
@@ -64,7 +64,7 @@ public class HospitalController {
                     hospitalDTOs = hospitalService.searchHospitalsWithDetails(query, page, limit);
                 }
                 else {
-                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 입력");
+                    hospitalDTOs = hospitalService.getAllHospitals(page, limit);
                 }
                 return ResponseEntity.ok(hospitalDTOs);
             }

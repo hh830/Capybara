@@ -24,8 +24,6 @@ public class JwtTokenFilter extends GenericFilterBean {
         this.tokenStore = tokenStore;
     }
 
-
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
@@ -34,7 +32,9 @@ public class JwtTokenFilter extends GenericFilterBean {
             String token = jwtTokenProvider.resolveToken(request);
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 String username = jwtTokenProvider.getUsername(token);
+                System.out.println("username = "+username);
                 String storedToken = tokenStore.getToken(username);
+                System.out.println("storedToken = "+storedToken);
                 if (storedToken != null && storedToken.equals(token)) {
                     Authentication auth = jwtTokenProvider.getAuthentication(token);
                     SecurityContextHolder.getContext().setAuthentication(auth);
@@ -46,7 +46,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰\"}";
+                    String jsonErrorResponse = "{\"status\": 401, \"message\": \"유효하지 않은 토큰\"}";
                     response.getWriter().write(jsonErrorResponse);
                 }
             } else {
@@ -61,7 +61,7 @@ public class JwtTokenFilter extends GenericFilterBean {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            String jsonErrorResponse = "{\"status\": 401, \"error\": \"유효하지 않은 토큰\"}";
+            String jsonErrorResponse = "{\"status\": 401, \"message\": \"유효하지 않은 토큰\"}";
             response.getWriter().write(jsonErrorResponse);
             filterChain.doFilter(req, res); // 토큰이 없거나 유효하지 않으면 필터 체인 계속 진행
 

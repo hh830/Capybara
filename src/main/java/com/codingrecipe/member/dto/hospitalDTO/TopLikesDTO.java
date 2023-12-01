@@ -6,27 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class HospitalDTO {
+public class TopLikesDTO {
 
     private String id;
     private String name;
     private String address;
     private String department;
-    private String operatingHours;
-    private Long likeCount;
 
-    public HospitalDTO(String id, String name, String address, String department, String operatingHours, Long likeCount) {
-        this.id=id;
+    public TopLikesDTO(String businessId, String name, String address, String department) {
+        this.id = businessId;
         this.name = name;
         this.address = address;
         this.department = department;
-        this.operatingHours = operatingHours;
-        this.likeCount = likeCount;
     }
-
-
 }

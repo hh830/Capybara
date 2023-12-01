@@ -20,4 +20,5 @@ public interface HospitalRepository extends JpaRepository<Hospital, String>, Hos
 
     Optional<Hospital> findById(String businessId);
 
+    Optional<Hospital> findByBusinessId(String businessId);
 }

@@ -1,5 +1,8 @@
 package com.codingrecipe.member;
 
+import com.codingrecipe.member.exception.CustomValidationException;
+import org.springframework.http.HttpStatus;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -26,7 +29,7 @@ public class TimeRange { //운영시간과 휴게시간 처리
         try {
             String[] parts = timeRangeStr.split("~");
             if (parts.length != 2) {
-                throw new IllegalArgumentException("Invalid time range format");
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(),"Invalid time range format");
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -35,7 +38,9 @@ public class TimeRange { //운영시간과 휴게시간 처리
 
             return new TimeRange(start, end);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid time format in input: '" + timeRangeStr + "'", e);
+            throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(),"Invalid time range format");
+        } catch (Exception e){
+            throw new CustomValidationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "운영 시간 조회 에러");
         }
     }
 
