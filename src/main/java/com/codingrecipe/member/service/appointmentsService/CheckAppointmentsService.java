@@ -18,7 +18,7 @@ public class CheckAppointmentsService {
     public List<AppointmentsDTO> getReservationsByUserId(String userId) {
 
         try{
-            List<Appointments> appointments = appointmentsRepository.findByPatients_PatientId(userId);
+            List<Appointments> appointments = appointmentsRepository.findByPatients_PatientIdOrderByAppointmentDateDesc(userId);
             List<AppointmentsDTO> appointmentDTOs = new ArrayList<>();
 
             for (Appointments appointment : appointments) {

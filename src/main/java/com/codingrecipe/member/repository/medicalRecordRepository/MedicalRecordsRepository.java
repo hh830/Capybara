@@ -12,13 +12,15 @@ import java.util.List;
 
 @Repository
 public interface MedicalRecordsRepository extends JpaRepository<MedicalRecords, String> {
-    List<MedicalRecords> findByPatients_PatientId(String userId);
 
-    List<MedicalRecords> findByPatients_PatientIdAndDoctors_Hospital_NameLikeAndRecordDate(String patientId, String hospitalName, LocalDate date);
+    List<MedicalRecords> findByPatients_PatientIdOrderByRecordDateDesc(String userId);
 
-    List<MedicalRecords> findByPatients_PatientIdAndRecordDate(String patientId, LocalDate recordDate);
+    List<MedicalRecords> findByPatients_PatientIdAndDoctors_Hospital_NameLikeAndRecordDateOrderByRecordDateDesc(String patientId, String hospitalName, LocalDate date);
 
-    List<MedicalRecords> findByPatients_PatientIdAndDoctors_Hospital_NameLike(String patientId, String name);
+    List<MedicalRecords> findByPatients_PatientIdAndRecordDateOrderByRecordDateDesc(String patientId, LocalDate recordDate);
 
+    List<MedicalRecords> findByPatients_PatientIdAndDoctors_Hospital_NameLikeOrderByRecordDateDesc(String patientId, String name);
+
+    //recordDetails
     MedicalRecords findByRecordId(int recordId);
 }

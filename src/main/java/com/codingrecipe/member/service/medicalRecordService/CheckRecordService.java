@@ -22,7 +22,7 @@ public class CheckRecordService {
     public List<RecordDTO> checkRecordService(String userId) {
         try {
             // 환자 ID로 모든 의료기록 조회
-            List<MedicalRecords> medicalRecords = medicalRecordsRepository.findByPatients_PatientId(userId);
+            List<MedicalRecords> medicalRecords = medicalRecordsRepository.findByPatients_PatientIdOrderByRecordDateDesc(userId);
             List<RecordDTO> recordDTOS = new ArrayList<>();
 
             for (MedicalRecords record : medicalRecords) {

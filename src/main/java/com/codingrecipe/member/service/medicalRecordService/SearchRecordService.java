@@ -25,13 +25,13 @@ public class SearchRecordService {
         try {
             List<MedicalRecords> medicalRecords = new ArrayList<>(); // 빈 리스트로 초기화
             if (hospitalName != null && date != null) {
-                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndDoctors_Hospital_NameLikeAndRecordDate(userId, "%" + hospitalName + "%", date);
+                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndDoctors_Hospital_NameLikeAndRecordDateOrderByRecordDateDesc(userId, "%" + hospitalName + "%", date);
 
             } else if (hospitalName == null && date != null) {
-                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndRecordDate(userId, date);
+                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndRecordDateOrderByRecordDateDesc(userId, date);
 
             } else if (hospitalName != null) {
-                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndDoctors_Hospital_NameLike(userId, "%" + hospitalName + "%");
+                medicalRecords = medicalRecordsRepository.findByPatients_PatientIdAndDoctors_Hospital_NameLikeOrderByRecordDateDesc(userId, "%" + hospitalName + "%");
             } else {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "검색어나 날짜를 입력해주세요");
             }
@@ -46,13 +46,9 @@ public class SearchRecordService {
     private RecordDTO convertToDTO(MedicalRecords medicalRecords) {
         RecordDTO dto = new RecordDTO(
                 medicalRecords.getRecordId(),
-                //record.getContent(),
                 medicalRecords.getRecordDate(),
-                //record.getPatients().getName(),
-                //record.getDoctors().getLicenseNumber(),
                 medicalRecords.getDoctors().getName(),
                 medicalRecords.getDoctors().getHospital().getName()
-        // 병원 이름 추가
         );
         return dto;
     }
