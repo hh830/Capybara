@@ -1,9 +1,11 @@
 package com.codingrecipe.member.service.hospitalService;
 
 import com.codingrecipe.member.TimeRange;
+import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.entity.OperatingHours;
 import com.codingrecipe.member.exception.CustomValidationException;
 import com.codingrecipe.member.repository.appointmentsRepository.AppointmentsRepository;
+import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
 import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;
 
 import java.time.DayOfWeek;
@@ -28,14 +30,23 @@ public class AvailableTimeService {
     @Autowired
     private AppointmentsRepository appointmentsRepository;
 
-    public Map<String, List<Map<String, Object>>> getAvailableTimes(String hospitalId, String dateStr) {
+    @Autowired
+    private HospitalRepository hospitalRepository;
+
+    public Map<String, Object> getAvailableTimes(String hospitalId, String dateStr) {
         LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE);
-        Map<String, List<Map<String, Object>>> availableTimesMap = new HashMap<>();
+        //Map<String, List<Map<String, Object>>> availableTimesMap = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
 
         List<Map<String, Object>> availableTimes = getAvailableTimesForSingleDate(hospitalId, date);
-        availableTimesMap.put(date.toString(), availableTimes);
 
-        return availableTimesMap;
+        String hospitalName = hospitalRepository.findByBusinessId(hospitalId);
+
+        // JSON 객체에 병원 이름과 사용 가능한 시간 추가
+        response.put("hospitalName", hospitalName);
+        response.put(date.toString(), availableTimes);
+
+        return response;
     }
 
     public List<Map<String, Object>> getAvailableTimesForSingleDate(String hospitalId, LocalDate date) {

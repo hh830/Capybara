@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface OperationTimeRepositoryCustom {
-    String findOperatingHoursByHospitalIdAndDay(String businessId, String today);
+    String findOperatingHoursByHospitalIdAndDay(String businessId, String dayOfWeek);
 
     String findBreakTimeByHospitalIdAndDay(String businessId, String dayOfWeek);
 

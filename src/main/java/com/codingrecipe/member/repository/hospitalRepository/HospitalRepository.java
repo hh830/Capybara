@@ -20,5 +20,8 @@ public interface HospitalRepository extends JpaRepository<Hospital, String>, Hos
 
     Optional<Hospital> findById(String businessId);
 
-    Optional<Hospital> findByBusinessId(String businessId);
+    //Optional<Hospital> findByBusinessId(String businessId);
+
+    @Query("SELECT h.name FROM Hospital h WHERE h.businessId = :businessId")
+    String findByBusinessId(@Param("businessId") String businessId);
 }

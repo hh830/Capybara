@@ -14,14 +14,16 @@ public class HospitalDTO {
 
     private String id;
     private String name;
+    private String phoneNumber;
     private String address;
     private String department;
     private String operatingHours;
     private Long likeCount;
 
-    public HospitalDTO(String id, String name, String address, String department, String operatingHours, Long likeCount) {
+    public HospitalDTO(String id, String name, String phoneNumber, String address, String department, String operatingHours, Long likeCount) {
         this.id=id;
         this.name = name;
+        this.phoneNumber = phoneNumber;
         this.address = address;
         this.department = department;
         this.operatingHours = operatingHours;

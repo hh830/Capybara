@@ -21,7 +21,7 @@ public class AvailableTimeController {
     private AvailableTimeService availableTimeService;
 
     @GetMapping("/available-times")
-    public Map<String, List<Map<String, Object>>> getAvailableTimes(@RequestParam String hospitalId, @RequestParam String date) {
+    public Map<String, Object> getAvailableTimes(@RequestParam String hospitalId, @RequestParam String date) {
         validateHospitalId(hospitalId);
         validateDate(date);
         return availableTimeService.getAvailableTimes(hospitalId, date);
