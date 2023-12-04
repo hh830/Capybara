@@ -33,7 +33,7 @@ public class HospitalService {
         PageRequest pageRequest = PageRequest.of(page,size);
 
         // 오늘 날짜에 해당하는 요일을 한글로 구합니다.
-            String today = new SimpleDateFormat("EEEE", Locale.KOREAN).format(new Date());
+            String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
             System.out.println("query = " + query);
             // 동적 쿼리로 병원 검색
             Page<Hospital> hospitals = hospitalRepository.searchWithDynamicQuery(query, pageRequest);
@@ -48,6 +48,7 @@ public class HospitalService {
                 return new HospitalDTO(
                         hospital.getBusinessId(),
                         hospital.getName(),
+                        hospital.getPhoneNumber(),
                         hospital.getAddress(),
                         hospital.getDepartment(),
                         operatingHours,
@@ -60,7 +61,7 @@ public class HospitalService {
 
     public List<HospitalDTO> searchByDepartment(String department, int page, int size) {
         // 오늘 날짜에 해당하는 요일을 한글로 구합니다.
-        String today = new SimpleDateFormat("EEEE", Locale.KOREAN).format(new Date());
+        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         PageRequest pageRequest = PageRequest.of(page,size);
         Page<Hospital> hospitals = hospitalRepository.findByDepartment(department, pageRequest);
 
@@ -74,6 +75,7 @@ public class HospitalService {
             return new HospitalDTO(
                     hospital.getBusinessId(),
                     hospital.getName(),
+                    hospital.getPhoneNumber(),
                     hospital.getAddress(),
                     hospital.getDepartment(),
                     operatingHours,
@@ -84,7 +86,7 @@ public class HospitalService {
 
     public List<HospitalDTO> getAllHospitals(int page, int size) {
 
-        String today = new SimpleDateFormat("EEEE", Locale.KOREAN).format(new Date());
+        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         PageRequest pageRequest = PageRequest.of(page,size);
         Page<Hospital> hospitals = hospitalRepository.findAll(pageRequest);
 
@@ -98,6 +100,7 @@ public class HospitalService {
             return new HospitalDTO(
                     hospital.getBusinessId(),
                     hospital.getName(),
+                    hospital.getPhoneNumber(),
                     hospital.getAddress(),
                     hospital.getDepartment(),
                     operatingHours,
