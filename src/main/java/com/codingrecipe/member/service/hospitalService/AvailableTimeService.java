@@ -44,7 +44,7 @@ public class AvailableTimeService {
 
         // JSON 객체에 병원 이름과 사용 가능한 시간 추가
         response.put("hospitalName", hospitalName);
-        response.put(date.toString(), availableTimes);
+        response.put("availableTime", availableTimes);
 
         return response;
     }
