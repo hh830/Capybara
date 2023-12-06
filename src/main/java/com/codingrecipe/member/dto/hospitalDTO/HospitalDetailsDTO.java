@@ -43,6 +43,9 @@ public class HospitalDetailsDTO {
         this.doctors = doctors;
     }
 
-
+/*
+    public String getStatus() {
+        return hospitalStatus;
+    }*/
 }
 

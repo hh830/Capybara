@@ -64,7 +64,6 @@ public class HospitalController {
 
         } catch (CustomValidationException e) {
             // CustomValidationException에 대한 특별한 처리
-            System.out.println("12134");
             errorBody.put("status", HttpStatus.BAD_REQUEST.value());
             errorBody.put("message", "입력 형식 오류");
             return ResponseEntity
