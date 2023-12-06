@@ -48,7 +48,10 @@ public class CancelAppointmentsController {
                 response.put("message", "유효하지 않은 토큰");
                 return ResponseEntity.badRequest().body(response);
             }
-        } catch (Exception e) {
+        } catch (CustomValidationException e){
+            throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
+        catch (Exception e) {
             throw new CustomValidationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
     }

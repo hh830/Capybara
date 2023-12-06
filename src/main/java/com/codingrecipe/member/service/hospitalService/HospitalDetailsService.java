@@ -1,5 +1,6 @@
 package com.codingrecipe.member.service.hospitalService;
 
+import com.codingrecipe.member.TimeRange;
 import com.codingrecipe.member.dto.doctorDTO.DoctorDTO;
 import com.codingrecipe.member.dto.hospitalDTO.HospitalDetailsDTO;
 import com.codingrecipe.member.entity.Doctors;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +42,7 @@ public class HospitalDetailsService {
         Hospital hospital = hospitalRepository.findById(hospitalId).orElseThrow(()-> new RuntimeException("Hospital not found"));
         String operatingHours = operationTimeRepository.findOperatingHoursByHospitalIdAndDay(hospitalId, today);
         String breakTime = operationTimeRepository.findBreakTimeByHospitalIdAndDay(hospitalId, today);
+        String hospitalStatus = determineHospitalStatus(operatingHours, breakTime);
 
         long likesCount = likesRepository.getLikesCountForHospital(hospitalId);
 
@@ -55,6 +58,31 @@ public class HospitalDetailsService {
                 new DoctorDTO(doctor.getName(), doctor.getBiography(), doctor.getGender())
         ).collect(Collectors.toList());
 
-        return new HospitalDetailsDTO(hospital, operatingHours, breakTime, likesCount, isLikes, doctorDTOs);
+        return new HospitalDetailsDTO(hospital, operatingHours, breakTime, likesCount, isLikes, hospitalStatus, doctorDTOs);
+    }
+
+    private String determineHospitalStatus(String operatingHours, String breakTime) {
+        LocalTime currentTime = LocalTime.now();
+        TimeRange operatingRange = TimeRange.fromString(operatingHours);
+        TimeRange breakRange = TimeRange.fromString(breakTime);
+
+        if (operatingRange == null) {
+            return "오늘휴무";
+        } else if (isCurrentTimeInRange(currentTime, breakRange)) {
+            return "휴게시간";
+        } else if (isCurrentTimeInRange(currentTime, operatingRange)) {
+            return "영업중";
+        } else if (currentTime.isBefore(operatingRange.getStartTime())) {
+            return "영업전";
+        } else {
+            return "영업종료";
+        }
+    }
+
+    private boolean isCurrentTimeInRange(LocalTime currentTime, TimeRange range) {
+        if (range == null) {
+            return false;
+        }
+        return !currentTime.isBefore(range.getStartTime()) && !currentTime.isAfter(range.getEndTime());
     }
 }
