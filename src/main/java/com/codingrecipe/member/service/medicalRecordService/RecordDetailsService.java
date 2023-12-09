@@ -41,7 +41,7 @@ public class RecordDetailsService {
             boolean isLikes = likesRepository.existsByPatients_PatientIdAndHospital_BusinessId(userId, medicalRecords.getDoctors().getHospital().getBusinessId());
 
             RecordDetailsDTO recordDetailsDTO = new RecordDetailsDTO(recordId, medicalRecords.getContent(), medicalRecords.getRecordDate(),
-                    medicalRecords.getPatients().getName(), medicalRecords.getPatients().getBirthDate(),
+                    medicalRecords.getPatients().getName(), medicalRecords.getPatients().getBirthDate(), medicalRecords.getDoctors().getHospital().getBusinessId(),
                     medicalRecords.getDoctors().getHospital().getName(), medicalRecords.getDoctors().getHospital().getPhoneNumber(),
                     medicalRecords.getDoctors().getLicenseNumber(), medicalRecords.getDoctors().getName(),
                     isLikes, likesCount

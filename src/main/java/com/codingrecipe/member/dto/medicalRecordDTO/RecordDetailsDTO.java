@@ -23,6 +23,8 @@ public class RecordDetailsDTO {
 
     private String birthDate; //환자 생일
 
+    private String hospitalId; //병원 아이디
+
     private String hospitalName; //병원명
 
     private String phoneNumber; //병원번호
@@ -35,12 +37,13 @@ public class RecordDetailsDTO {
 
     private long countLikes; //좋아요 총 수
 
-    public RecordDetailsDTO(int recordId, String content, LocalDate recordDate, String patientName, String birthDate, String hospitalName, String phoneNumber, String licenseNumber, String doctorName, boolean isLikes, long countLikes) {
+    public RecordDetailsDTO(int recordId, String content, LocalDate recordDate, String patientName, String birthDate, String hospitalId, String hospitalName, String phoneNumber, String licenseNumber, String doctorName, boolean isLikes, long countLikes) {
         this.recordId = recordId;
         this.content = content;
         this.recordDate = recordDate;
         this.patientName = patientName;
         this.birthDate = birthDate;
+        this.hospitalId = hospitalId;
         this.hospitalName = hospitalName;
         this.phoneNumber = phoneNumber;
         this.licenseNumber = licenseNumber;
