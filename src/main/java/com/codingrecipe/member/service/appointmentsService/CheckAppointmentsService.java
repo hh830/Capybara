@@ -2,7 +2,7 @@ package com.codingrecipe.member.service.appointmentsService;
 
 import com.codingrecipe.member.dto.appointmentsDTO.AppointmentsDTO;
 import com.codingrecipe.member.entity.Appointments;
-import com.codingrecipe.member.repository.appointmentsRepository.AppointmentsRepository;
+import com.codingrecipe.member.repository.AppointmentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

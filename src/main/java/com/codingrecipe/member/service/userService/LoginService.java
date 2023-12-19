@@ -3,19 +3,15 @@ package com.codingrecipe.member.service.userService;
 
 import com.codingrecipe.member.Security.JwtTokenProvider;
 import com.codingrecipe.member.Security.TokenStore;
-import com.codingrecipe.member.dto.userDTO.LoginDTO;
-import com.codingrecipe.member.entity.Patients;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

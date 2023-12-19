@@ -1,7 +1,7 @@
 package com.codingrecipe.member;
 
 import com.codingrecipe.member.entity.Doctors;
-import com.codingrecipe.member.repository.doctorRepository.DoctorRepository;
+import com.codingrecipe.member.repository.DoctorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

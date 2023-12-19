@@ -5,7 +5,7 @@ import com.codingrecipe.member.dto.doctorDTO.DoctorDTO;
 import com.codingrecipe.member.dto.hospitalDTO.HospitalDetailsDTO;
 import com.codingrecipe.member.entity.Doctors;
 import com.codingrecipe.member.entity.Hospital;
-import com.codingrecipe.member.repository.doctorRepository.DoctorRepository;
+import com.codingrecipe.member.repository.DoctorRepository;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
 import com.codingrecipe.member.repository.likesRepository.LikesRepository;
 import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;

@@ -1,7 +1,7 @@
 package com.codingrecipe.member.Security;
 
 import com.codingrecipe.member.entity.Patients;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

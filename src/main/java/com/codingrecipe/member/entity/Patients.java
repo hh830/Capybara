@@ -39,8 +39,6 @@ public class Patients {
     @OneToMany(mappedBy = "patients")
     private Set<MedicalRecords> medicalRecords;
 
-    @Version
-    private Long version;
 
     public Patients(RegistrationDTO registrationDTO) {
         this.patientId = registrationDTO.getUserId();

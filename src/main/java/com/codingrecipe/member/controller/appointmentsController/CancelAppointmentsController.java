@@ -32,13 +32,13 @@ public class CancelAppointmentsController {
                 boolean isCancelled = cancelAppointmentsService.cancelAppointment(appointmentId, userId);
                 if (isCancelled) {
                     response.put("status", HttpStatus.OK.value());
-                    response.put("appointmentId", appointmentId);
+                    response.put("id", appointmentId);
                     response.put("message", "예약 취소 완료");
 
                     return ResponseEntity.ok().body(response);
                 } else {
                     response.put("status", HttpStatus.BAD_REQUEST.value());
-                    response.put("appointmentId", appointmentId);
+                    response.put("id", appointmentId);
                     response.put("message", "예약 취소 실패");
 
                     return ResponseEntity.badRequest().body(response);

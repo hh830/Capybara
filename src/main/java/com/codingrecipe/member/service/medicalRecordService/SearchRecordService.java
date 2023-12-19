@@ -1,11 +1,9 @@
 package com.codingrecipe.member.service.medicalRecordService;
 
-import com.codingrecipe.member.dto.appointmentsDTO.AppointmentsDTO;
 import com.codingrecipe.member.dto.medicalRecordDTO.RecordDTO;
-import com.codingrecipe.member.entity.Appointments;
 import com.codingrecipe.member.entity.MedicalRecords;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.medicalRecordRepository.MedicalRecordsRepository;
+import com.codingrecipe.member.repository.MedicalRecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

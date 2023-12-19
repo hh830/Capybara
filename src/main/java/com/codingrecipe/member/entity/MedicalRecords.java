@@ -1,9 +1,8 @@
 package com.codingrecipe.member.entity;
 
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.doctorRepository.DoctorRepository;
-import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.DoctorRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

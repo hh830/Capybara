@@ -1,14 +1,12 @@
 package com.codingrecipe.member.service.hospitalService;
 
 import com.codingrecipe.member.TimeRange;
-import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.entity.OperatingHours;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.appointmentsRepository.AppointmentsRepository;
+import com.codingrecipe.member.repository.AppointmentsRepository;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
 import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;
 
-import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -16,11 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Service
 public class AvailableTimeService {

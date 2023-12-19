@@ -1,4 +1,4 @@
-package com.codingrecipe.member.repository.doctorRepository;
+package com.codingrecipe.member.repository;
 
 import com.codingrecipe.member.entity.Doctors;
 import com.codingrecipe.member.entity.Hospital;

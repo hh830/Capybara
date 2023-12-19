@@ -2,15 +2,11 @@ package com.codingrecipe.member.service.appointmentsService;
 
 import com.codingrecipe.member.dto.appointmentsDTO.AppointmentsDTO;
 import com.codingrecipe.member.entity.Appointments;
-import com.codingrecipe.member.entity.Hospital;
-import com.codingrecipe.member.entity.OperatingHours;
 import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.appointmentsRepository.AppointmentsRepository;
+import com.codingrecipe.member.repository.AppointmentsRepository;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
-import com.codingrecipe.member.repository.operationTimeRepository.OperationTimeRepository;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
-import com.codingrecipe.member.service.hospitalService.AvailableTimeService;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
@@ -18,16 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import javax.persistence.LockTimeoutException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class AppointmentsService {

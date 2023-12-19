@@ -8,7 +8,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.codingrecipe.member.dto.userDTO.RegistrationDTO;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,9 +44,9 @@ public class RegistrationService {
 
             return new RegistrationDTO(savedPatient);
 
-        } catch (ObjectOptimisticLockingFailureException e)
+        } catch (Exception e)
         {
-            throw new CustomValidationException(HttpStatus.CONFLICT.value(), "동시 업데이트로 인한 예약 실패, 다시 실행해주세요.");
+            throw new CustomValidationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "회원가입 실패. 다시 실행해주세요.");
         }
 
     }
@@ -86,9 +86,17 @@ public class RegistrationService {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디 형식 오류");
             }
 
+            if (registrationDTO.getUserId().length() > 10) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "아이디 10글자 이하 입력 가능");
+            }
+
             // 비밀번호 길이가 8자 미만인 경우
             if (registrationDTO.getPassword().length() < 8) {
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 8자 이상 필수 입력");
+            }
+
+            if (registrationDTO.getPassword().length() > 20) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호 20글자 이하 입력 가능");
             }
 
             //비밀번호 영문자, 숫자, 특수문자만 포함

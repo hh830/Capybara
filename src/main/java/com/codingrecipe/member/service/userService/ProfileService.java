@@ -6,7 +6,7 @@ import com.codingrecipe.member.entity.Patients;
 import com.codingrecipe.member.exception.CustomServiceException;
 import com.codingrecipe.member.exception.CustomValidationException;
 import com.codingrecipe.member.exception.NotFoundException;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import java.util.regex.Pattern;
 
@@ -44,7 +43,10 @@ public class ProfileService {
             StringUtils.removeSpacesFromDtoFields(profileDTO); //공백 제거
 
             // 비밀번호 변경 (null이 아닌 경우에만)
-            if (profileDTO.getPassword() == null || profileDTO.getPassword().isEmpty()) {
+            if (profileDTO.getPassword() == null) {
+            }
+            else if (profileDTO.getPassword().isBlank()) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "비밀번호는 빈값일 수 없습니다.");
             }
             else{
                 if(profileDTO.getPassword().length() >= 8 && Pattern.matches("^[a-zA-Z0-9\\p{Punct}]+$", profileDTO.getPassword())){
@@ -56,7 +58,10 @@ public class ProfileService {
             }
 
             // 이름 변경 (null이 아닌 경우에만)
-            if (profileDTO.getUserName()==null || profileDTO.getUserName().isEmpty()) {
+            if (profileDTO.getUserName()==null) {
+            }
+            else if (profileDTO.getUserName().isBlank()) {
+                throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "이름은 빈값일 수 없습니다.");
             }
             else{
                 if (!isValidKoreanName(profileDTO.getUserName())) {
@@ -70,6 +75,9 @@ public class ProfileService {
             // 전화번호 변경 (null이 아닌 경우에만)
             if (profileDTO.getPhoneNumber()== null || profileDTO.getPhoneNumber().isEmpty()) {
 
+            } else if (profileDTO.getPhoneNumber().isBlank()) {
+                    throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "전화번호는 빈값일 수 없습니다.");
+
             }else{
                 if(Pattern.matches("\\d{3}-\\d{4}-\\d{4}", profileDTO.getPhoneNumber()))
                 {
@@ -81,8 +89,6 @@ public class ProfileService {
             }
 
             return patientRepository.save(patients);
-        } catch (ObjectOptimisticLockingFailureException e) {
-            throw new CustomValidationException(HttpStatus.CONFLICT.value(), "동시 업데이트로 인한 예약 실패, 다시 실행해주세요.");
         } catch (DataAccessException e) {
             throw new CustomServiceException("서버 오류", e);
         } catch (EntityNotFoundException e) {

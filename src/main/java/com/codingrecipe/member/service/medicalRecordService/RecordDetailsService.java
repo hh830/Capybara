@@ -1,27 +1,13 @@
 package com.codingrecipe.member.service.medicalRecordService;
 
-import com.codingrecipe.member.dto.doctorDTO.DoctorDTO;
-import com.codingrecipe.member.dto.hospitalDTO.HospitalDetailsDTO;
-import com.codingrecipe.member.dto.medicalRecordDTO.RecordDTO;
 import com.codingrecipe.member.dto.medicalRecordDTO.RecordDetailsDTO;
-import com.codingrecipe.member.entity.Doctors;
-import com.codingrecipe.member.entity.Hospital;
 import com.codingrecipe.member.entity.MedicalRecords;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.doctorRepository.DoctorRepository;
 import com.codingrecipe.member.repository.likesRepository.LikesRepository;
-import com.codingrecipe.member.repository.medicalRecordRepository.MedicalRecordsRepository;
+import com.codingrecipe.member.repository.MedicalRecordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Service
 public class RecordDetailsService {
