@@ -17,7 +17,6 @@ public class Patients {
 
     @Id //기본키
     @Column(name = "patient_id")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
     private String patientId;
 
     @Column
