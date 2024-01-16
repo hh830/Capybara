@@ -20,23 +20,23 @@ public class LikesCancelService {
     private LikesRepository likesRepository;
 
     @Transactional
-    public ResponseEntity<?> deleteLike(LikesDTO likesDTO, String userId) {
+    public ResponseEntity<?> deleteLike(String businessId, String userId) {
         Map<String, Object> response = new HashMap<>();
         try {
-            boolean alreadyLiked = likesRepository.existsByHospital_BusinessIdAndPatients_PatientId(likesDTO.getHospitalId(), userId);
+            boolean alreadyLiked = likesRepository.existsByHospital_BusinessIdAndPatients_PatientId(businessId, userId);
 
             if (alreadyLiked) { //좋아요를 이미 누른 경우
-                Likes newLike = likesRepository.findByHospital_BusinessIdAndPatients_PatientId(likesDTO.getHospitalId(), userId);
+                Likes newLike = likesRepository.findByHospital_BusinessIdAndPatients_PatientId(businessId, userId);
                 likesRepository.delete(newLike);
             } else{
                 throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), "잘못된 요청 (좋아요를 누르지 않음)");
             }
 
-            long count = likesRepository.getLikesCountForHospital(likesDTO.getHospitalId());
+            long count = likesRepository.getLikesCountForHospital(businessId);
 
             response.put("status", HttpStatus.OK);
             response.put("message", "좋아요 삭제 성공");
-            response.put("hospitalId", likesDTO.getHospitalId());
+            response.put("hospitalId", businessId);
             response.put("total", count);
 
             return ResponseEntity.status(HttpStatus.OK.value()).body(response);

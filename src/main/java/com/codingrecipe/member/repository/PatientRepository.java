@@ -1,4 +1,4 @@
-package com.codingrecipe.member.repository.userRepository;
+package com.codingrecipe.member.repository;
 
 import com.codingrecipe.member.entity.Patients;
 import org.springframework.data.jpa.repository.JpaRepository;

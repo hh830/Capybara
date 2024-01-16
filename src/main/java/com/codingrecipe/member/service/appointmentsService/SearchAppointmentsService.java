@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.codingrecipe.member.dto.appointmentsDTO.AppointmentsDTO;
 import com.codingrecipe.member.entity.Appointments;
-import com.codingrecipe.member.repository.appointmentsRepository.AppointmentsRepository;
+import com.codingrecipe.member.repository.AppointmentsRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

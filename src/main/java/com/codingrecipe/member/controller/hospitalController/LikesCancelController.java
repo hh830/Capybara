@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/likes")
+@RequestMapping("/likes/cancel")
 public class LikesCancelController {
 
     @Autowired
     private LikesCancelService likesCancelService;
 
-    @DeleteMapping("/cancel")
-    public ResponseEntity<?> cancelLikes(@RequestBody LikesDTO likesDTO){
+    @DeleteMapping("/{businessId}")
+    public ResponseEntity<?> cancelLikes(@PathVariable String businessId){
         Map<String, Object> response = new HashMap<>();
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -30,7 +30,7 @@ public class LikesCancelController {
             if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated()) {
                 // 인증된 사용자의 정보를 활용
                 String userId = authentication.getName();
-                return likesCancelService.deleteLike(likesDTO, userId);
+                return likesCancelService.deleteLike(businessId, userId);
 
             } else {
                 throw new CustomValidationException(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 토큰");

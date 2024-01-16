@@ -1,4 +1,4 @@
-package com.codingrecipe.member.repository.appointmentsRepository;
+package com.codingrecipe.member.repository;
 
 import com.codingrecipe.member.entity.Appointments;
 import org.springframework.data.jpa.repository.*;

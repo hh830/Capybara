@@ -3,7 +3,7 @@ package com.codingrecipe.member.controller.userController;
 import com.codingrecipe.member.Security.JwtTokenProvider;
 import com.codingrecipe.member.dto.userDTO.UserDTO;
 import com.codingrecipe.member.exception.CustomValidationException;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import com.codingrecipe.member.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

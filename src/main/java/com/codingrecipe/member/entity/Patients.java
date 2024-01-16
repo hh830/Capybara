@@ -17,7 +17,6 @@ public class Patients {
 
     @Id //기본키
     @Column(name = "patient_id")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
     private String patientId;
 
     @Column
@@ -39,8 +38,6 @@ public class Patients {
     @OneToMany(mappedBy = "patients")
     private Set<MedicalRecords> medicalRecords;
 
-    @Version
-    private Long version;
 
     public Patients(RegistrationDTO registrationDTO) {
         this.patientId = registrationDTO.getUserId();

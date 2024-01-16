@@ -32,13 +32,13 @@ public class CancelAppointmentsController {
                 boolean isCancelled = cancelAppointmentsService.cancelAppointment(appointmentId, userId);
                 if (isCancelled) {
                     response.put("status", HttpStatus.OK.value());
-                    response.put("appointmentId", appointmentId);
+                    response.put("id", appointmentId);
                     response.put("message", "예약 취소 완료");
 
                     return ResponseEntity.ok().body(response);
                 } else {
                     response.put("status", HttpStatus.BAD_REQUEST.value());
-                    response.put("appointmentId", appointmentId);
+                    response.put("id", appointmentId);
                     response.put("message", "예약 취소 실패");
 
                     return ResponseEntity.badRequest().body(response);
@@ -48,7 +48,10 @@ public class CancelAppointmentsController {
                 response.put("message", "유효하지 않은 토큰");
                 return ResponseEntity.badRequest().body(response);
             }
-        } catch (Exception e) {
+        } catch (CustomValidationException e){
+            throw new CustomValidationException(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        }
+        catch (Exception e) {
             throw new CustomValidationException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
     }

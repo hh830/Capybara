@@ -1,4 +1,4 @@
-package com.codingrecipe.member.repository.medicalRecordRepository;
+package com.codingrecipe.member.repository;
 
 import com.codingrecipe.member.entity.Appointments;
 import com.codingrecipe.member.entity.Doctors;

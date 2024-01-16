@@ -26,8 +26,9 @@ public class HospitalDetailsDTO {
     private Long likesCount;
     private boolean isLikedByUser;
     private List<DoctorDTO> doctors;
+    private String hospitalStatus;
 
-    public HospitalDetailsDTO(Hospital hospital, String operatingHours, String breakTime, Long likesCount, boolean isLikedByUser, List<DoctorDTO> doctors) {
+    public HospitalDetailsDTO(Hospital hospital, String operatingHours, String breakTime, Long likesCount, boolean isLikedByUser, String hospitalStatus, List<DoctorDTO> doctors) {
         this.hospitalId = hospital.getBusinessId();
         this.hospitalName = hospital.getName();
         this.address = hospital.getAddress();
@@ -38,8 +39,13 @@ public class HospitalDetailsDTO {
         this.breakTime = breakTime;
         this.likesCount = likesCount;
         this.isLikedByUser = isLikedByUser;
+        this.hospitalStatus = hospitalStatus;
         this.doctors = doctors;
     }
 
+/*
+    public String getStatus() {
+        return hospitalStatus;
+    }*/
 }
 

@@ -6,7 +6,7 @@ import com.codingrecipe.member.entity.Likes;
 import com.codingrecipe.member.exception.CustomValidationException;
 import com.codingrecipe.member.repository.hospitalRepository.HospitalRepository;
 import com.codingrecipe.member.repository.likesRepository.LikesRepository;
-import com.codingrecipe.member.repository.userRepository.PatientRepository;
+import com.codingrecipe.member.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
