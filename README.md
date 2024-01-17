@@ -25,13 +25,13 @@ Notion, AWS, Postman, Figma
 <br>
 
 ## ERD
-![image](https://github.com/hhJ830/Capybara/assets/99874673/e8c69e21-09de-447b-aaed-3b3de9097be9)
+<img src="https://github.com/hhJ830/Capybara/assets/99874673/e8c69e21-09de-447b-aaed-3b3de9097be9" width=80% height=80%>
 <br>
 
 ## 릴레이션 스키마
-![image](https://github.com/hhJ830/Capybara/assets/99874673/7ce2ec85-0bb2-4e96-996c-727d49a4090d)
+<img src="https://github.com/hhJ830/Capybara/assets/99874673/7ce2ec85-0bb2-4e96-996c-727d49a4090d" width=80% height=80%>
 <br>
 
 ## MySQL
-![image](https://github.com/hhJ830/Capybara/assets/99874673/5e5ad1a0-80ef-47c9-8b22-0b4988471cf6)
+<img src="https://github.com/hhJ830/Capybara/assets/99874673/5e5ad1a0-80ef-47c9-8b22-0b4988471cf6" width=80% height=80%>
 
