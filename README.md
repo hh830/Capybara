@@ -1,5 +1,6 @@
 # Capybara
 병원 예약 어플리케이션<br><br>
+
 AndroidStudio, SpringBoot, MySQL, Python(크롤링)<br>
 Notion, AWS, Postman, Figma
 
@@ -16,8 +17,9 @@ Notion, AWS, Postman, Figma
 <img src="https://github.com/hhJ830/Capybara/assets/99874673/d7b97ded-f7a5-4abd-9d76-a046675d489d" width=18% height=18%>
 <img src="https://github.com/hhJ830/Capybara/assets/99874673/6ff321d1-61e5-435d-8875-1684aec4bb14" width=18% height=18%>
 
----
 # DB
+
+
 
 ## 요구사항 명세서
 ![image](https://github.com/hhJ830/Capybara/assets/99874673/310b1903-0f88-43ca-9233-8149595d16b2)
