@@ -18,8 +18,8 @@ public interface AppointmentsRepository extends JpaRepository<Appointments, Stri
     @Query("SELECT COUNT(a) FROM Appointments a WHERE a.hospital.businessId = :businessId AND a.appointmentDate = :appointmentDate AND a.appointmentTime = :appointmentTime")
     int countByHospital_BusinessIdAndAppointmentDateAndAppointmentTime(@Param("businessId") String businessId, @Param("appointmentDate") LocalDate appointmentDate, @Param("appointmentTime") LocalTime appointmentTime);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @QueryHints({ @QueryHint(name = "javax.persistence.lock.timeout", value = "5000") }) // 5초 타임아웃 설정
+    @Lock(LockModeType.PESSIMISTIC_WRITE) //베타적 락(select for update). 트랜잭션이 해당 레코드 락을 획득하고 이후 다른 트랜잭션이 해당 레코드의 락을 획득하려면 기존 락이 해제 될 때까지 기다려야 됨
+    @QueryHints({ @QueryHint(name = "javax.persistence.lock.timeout", value = "5000") }) // 5초 타임아웃 설정, 기존 락이 해제될 때까지 기다리는 시간. 해당 시간 지나도 락 획득 못하면 LockTimeoutException 예외 발생
     @Query("SELECT COUNT(a) FROM Appointments a WHERE a.hospital.businessId = :businessId AND a.appointmentDate = :appointmentDate AND a.appointmentTime = :startTime")
     int countAppointmentsForTimeSlot(@Param("businessId") String businessId,
                                      @Param("appointmentDate") LocalDate appointmentDate,
